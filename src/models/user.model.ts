@@ -6,6 +6,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     token?: string;
+    borrowedBooks: mongoose.Types.ObjectId[]; // Array of book IDs
     comparePassword(password: string): Promise<boolean>;
 }
 
@@ -14,6 +15,7 @@ const userSchema = new Schema<IUser>({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     token: { type: String },
+    borrowedBooks: [{ type: Schema.Types.ObjectId, ref: 'Book' }]
 });
 
 userSchema.pre<IUser>('save', async function (next) {

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { connectDB } from './db-connection';
 import authRoutes from './routes/auth.route';
 import bookRoutes from './routes/book.route';
+import mechanismRoutes from './routes/mechanism.route'
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,7 @@ connectDB();
 // Routes
 app.use('/auth', authRoutes);
 app.use(bookRoutes);
+app.use('/mechanism', mechanismRoutes);
 
 // Endpoint Health Check
 app.get('/', (req, res) => {
