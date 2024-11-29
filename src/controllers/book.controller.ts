@@ -101,6 +101,32 @@ export const modifyBook = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+export const bookQty = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const { id } = req.params;
+    const { addQty } = req.body; //jumlah stok yg akan ditambahkan
+    
+    try{
+        // update qty pd database
+        const updatedBook = await Book.findByIdAndUpdate(
+            id,
+            { $inc: { qty: addQty } }, //increment qty dgn addQty
+            { new: true } //return buku stelah diupdate
+        );
+
+        if (!updatedBook) {
+            res.status(404).json({ 
+                message: 'Buku tidak ditemukan' 
+            });
+            return;
+        }
+        res.status(200).json({ message: 'Stok berhasil ditambahkan', book: updatedBook });
+    }
+
+    catch (error) {
+        res.status(500).json({ message: 'Gagal memperbarui stok', error });
+    }
+};
+
 // Controller for deleting a book
 export const deleteBook = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
